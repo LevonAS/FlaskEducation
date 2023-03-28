@@ -1,4 +1,5 @@
 from flask import Flask, Blueprint, render_template
+from blog.models.database import db
 from .user.views import user_app
 from .report.views import report_app
 from .articles.views import articles_app
@@ -6,6 +7,8 @@ from .articles.views import articles_app
 
 def create_app() -> Flask:
     app = Flask(__name__)
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////tmp/blog.db"
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     register_blueprints(app)
     return app
 
