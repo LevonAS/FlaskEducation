@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Login page
+{% endblock %}
+
+{% block body %}
+    <h1>Login as (email):</h1>
+    {% if error %}
+        <div class="alert alert-danger" role="alert">
+         {{ error }}
+        </div>
+    {% endif %}
+    <form class="col-auto" method="post" action="{{ url_for('auth.login')}}">
+        <div class="mb-3 row">
+          <label for="exampleFormControlInput1" class="form-label">Email address :</label>
+          <input type="email" name="email" class="form-control" id="exampleFormControlInput1" placeholder="name@fff.com">
+        </div>
+        <div class="mb-3 row">
+          <label for="inputPassword2" class="visually-hidden">Password</label>
+          <input type="password" name="password" class="form-control" id="inputPassword2" placeholder="Password">
+        </div>
+        <div class="mb-3 row">
+          <button type="submit" class="btn btn-primary mb-3">Login</button>
+        </div>
+      </form>
+    <!-- <form method="post">
+        <label for="input-username">Login as (email):</label>
+        <input id="input-username" type="text" name="username" placeholder="guest" required>
+        <button type="submit">Login</button>
+    </form> -->
+{% endblock %}

@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "name": "Flask",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "args": [
+                "wsgi.py"
+            ],
+            "console": "integratedTerminal",
+        }
+    ]
+}

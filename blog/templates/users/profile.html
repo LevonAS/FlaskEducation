@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ user_name }}</h1>
+    <h1>{{ user.email }}</h1>
     <div>
         <a href="{{ url_for('user.user_list') }}">Back to users list</a>
     </div>

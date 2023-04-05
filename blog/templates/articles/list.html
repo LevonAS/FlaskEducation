@@ -7,16 +7,18 @@
 {% block body %}
 <h1>Articles</h1>
 <div class="row">
+    {% if current_user.is_authenticated %}
     <div class="col">
         <ul>
             {% for article in articles %}
             <li>
-                <a href="{{ url_for('articles.get_article', pk=article) }}">
-                    {{ articles[article].title }}
+                <a href="{{ url_for('articles.get_article', pk=article.id-1) }}">
+                    {{ article.title }}
                 </a>
             </li>
             {% endfor %}
         </ul>
     </div>
+    {% endif %}
 </div>
 {% endblock %}
