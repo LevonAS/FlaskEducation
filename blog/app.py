@@ -4,7 +4,7 @@ from flask_login import LoginManager
 from werkzeug.security import generate_password_hash
 import click
 
-
+from blog.extensions import migrate
 from .user.views import user_app
 from .report.views import report_app
 from .articles.views import articles_app
@@ -18,10 +18,13 @@ login_manager = LoginManager()
 
 def create_app() -> Flask:
     app = Flask(__name__)
+    # app.config.from_object('blog.config')
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["SECRET_KEY"] = b"d[12;/[d/2rqpl20rk02KPWDMK923#5U_))%FqwKO^A"
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///blog.db"
+    
     db.init_app(app)
+    migrate.init_app(app, db, compare_type=True)
 
     login_manager.login_view = "auth.login"
     login_manager.init_app(app)
