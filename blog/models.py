@@ -7,6 +7,8 @@ from sqlalchemy.orm import relationship
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(127), unique=True, nullable=False)
+    first_name = db.Column(db.String(127))
+    last_name = db.Column(db.String(127))
     password = db.Column(db.String(127))
     is_staff = db.Column(db.Boolean, default=False)
     # articles = relationship('Article')
@@ -22,5 +24,5 @@ class Article(db.Model):
     date = db.Column(db.DateTime, default=datetime.utcnow())
         
     def __repr__(self):
-        return f"<AArticle #{self.id} {self.title!r}>"
+        return f"<Article #{self.id} {self.title!r}>"
         # return f"<Article %r #{self.id}>"

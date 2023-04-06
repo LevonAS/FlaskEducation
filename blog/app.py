@@ -1,6 +1,7 @@
 from flask import Flask, Blueprint, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_wtf import CSRFProtect
 from werkzeug.security import generate_password_hash
 import click
 
@@ -14,17 +15,20 @@ from .auth.views import auth_app
 
 db = SQLAlchemy()
 login_manager = LoginManager()
+csrf = CSRFProtect()
 
 
 def create_app() -> Flask:
     app = Flask(__name__)
-    # app.config.from_object('blog.config')
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    app.config["SECRET_KEY"] = b"d[12;/[d/2rqpl20rk02KPWDMK923#5U_))%FqwKO^A"
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///blog.db"
+    app.config.from_object('blog.config')
+
+    # app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    # app.config["SECRET_KEY"] = b"d[12;/[d/2rqpl20rk02KPWDMK923#5U_))%FqwKO^A"
+    # app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///blog.db"
     
     db.init_app(app)
     migrate.init_app(app, db, compare_type=True)
+    csrf.init_app(app)
 
     login_manager.login_view = "auth.login"
     login_manager.init_app(app)
