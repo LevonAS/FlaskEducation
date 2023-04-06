@@ -10,6 +10,7 @@
 - Flask-Migrate-4.0.4 Mako-1.2.4 alembic-1.10.2;
 - python-dotenv-1.0.0;
 - psycopg2-binary-2.9.6;
+- installed Bcrypt-Flask-1.0.2 bcrypt-4.0.1;
 - python 3.10;
 - vUbuntu Server 22_04.
 
