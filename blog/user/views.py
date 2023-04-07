@@ -4,7 +4,7 @@ from werkzeug.exceptions import NotFound
 from werkzeug.security import generate_password_hash
 
 from blog.forms.user import UserRegisterForm
-
+ 
 user_app = Blueprint('user', __name__, static_folder='../static', url_prefix='/users')
 
 # USERS =  ['Bob', 'Alice', 'John']
@@ -17,9 +17,10 @@ user_app = Blueprint('user', __name__, static_folder='../static', url_prefix='/u
 @user_app.route('register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('user.profile', pk=current_user.id))
+        return redirect(url_for('articles.articles_list', pk=current_user.id))
 
     from blog.models import User
+    from blog.app import db
     form = UserRegisterForm(request.form)
     errors = []
     if request.method == 'POST' and form.validate_on_submit():
@@ -32,6 +33,7 @@ def register():
             first_name=form.first_name.data,
             last_name=form.last_name.data,
             password=generate_password_hash(form.password.data),
+            is_staff=False,
         )
 
         db.session.add(_user)
