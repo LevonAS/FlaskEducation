@@ -1,61 +1,64 @@
-from flask import Blueprint, render_template, redirect
+from flask import Blueprint, render_template, request, redirect, url_for
+from flask_login import login_required, current_user
 from werkzeug.exceptions import NotFound
-# from ..user.views import USERS
+
+# from blog.app import db
+# from blog.models import Article, Author
+from blog.forms.article import CreateArticleForm
 
 
-articles_app = Blueprint('articles', __name__, static_folder='../static', url_prefix='/articles')
+articles_app = Blueprint('articles', __name__, url_prefix='/articles', static_folder='../static')
 
-# ARTICLES = {
-#     1: {
-#         'title': 'Flask',
-#         'text': 'Flask — фреймворк для создания веб-приложений на языке\
-#             программирования Python, использующий набор инструментов Werkzeug,\
-#             а также шаблонизатор Jinja2',
-#         'author': 1
-#     },
-#     2: {
-#         'title': 'Django',
-#         'text': 'Django — свободный фреймворк для веб-приложений на языке Python,\
-#             использующий шаблон проектирования MVC',
-#         'author': 2
-#     },
-#     3: {
-#         'title': 'Django REST',
-#         'text': 'Django REST framework - это мощный и гибкий набор инструментов\
-#             для создания Web API.',
-#         'author': 3
-#     },
-# }
 
-# ARTICLES = ["Flask", "Django", "JSON:API"]
 
-@articles_app.route('/')
+@articles_app.route('/', methods=['GET'])
 def articles_list():
     from blog.models import Article
-    ARTICLES = Article.query.all()
-    articles=ARTICLES
-    print('111', articles)
+    articles: Article = Article.query.all()
     return render_template(
         'articles/list.html',
-        articles=ARTICLES,
+        articles=articles,
     )
 
-@articles_app.route('/<int:pk>')
-def get_article(pk: int):
+
+@articles_app.route('/<int:article_id>/', methods=['GET'])
+def article_detail(article_id):
     from blog.models import Article
-    ARTICLES = Article.query.all()
-    # print('222',pk,  ARTICLES[pk-1])
-    try:
-        article=ARTICLES[pk]
-        # print('333', article.author)
-    except KeyError:
-        # return redirect('/articles/')
-        raise NotFound(f'Article id {pk} not found')
-    # print('222', article['author'])
-    from blog.models import User
-    _user = User.query.filter_by(id=article.author).one_or_none()
+    _article: Article = Article.query.filter_by(id=article_id).one_or_none()
+    if _article is None:
+        raise NotFound
     return render_template(
         'articles/details.html',
-        article=article,
-        author=_user,
+        article=_article,
     )
+
+
+@articles_app.route('/create/', methods=['GET'])
+@login_required
+def create_article_form():
+    form = CreateArticleForm(request.form)
+    return render_template('articles/create.html', form=form)
+
+
+@articles_app.route('/', methods=['POST'])
+@login_required
+def create_article():
+    from blog.app import db
+    from blog.models import Article, Author
+    form = CreateArticleForm(request.form)
+    if form.validate_on_submit():
+        _article = Article(title=form.title.data.strip(), text=form.text.data)
+        if current_user.author:
+            _article.author_id = current_user.author.id
+        else:
+            author = Author(user_id=current_user.id)
+            db.session.add(author)
+            db.session.flush()
+            _article.author_id = author.id
+
+        db.session.add(_article)
+        db.session.commit()
+
+        return redirect(url_for('articles.article_detail', article_id=_article.id))
+
+    return render_template('articles/create.html', form=form)

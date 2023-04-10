@@ -12,9 +12,18 @@
           <a class="nav-link" href="{{ url_for('user.user_list') }}">Users</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('author.author_list') }}">Authors</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="{{ url_for('articles.articles_list') }}">
             Articles</a>         
         </li>
+        {% if current_user.is_authenticated %}
+        <li class="nav-item">
+           <a class="nav-link" href="{{ url_for('articles.create_article_form') }}">
+            Create article</a>
+        </li>
+        {% endif %}
         <!-- <li class="nav-item">
           <a class="nav-link" href="{{ url_for('report.report_list') }}">Reports</a>
         </li> -->
@@ -27,10 +36,10 @@
           <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
         </li>
         {% if current_user.is_authenticated %}
-          <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('auth.logout') }}">
-                Logout ({{ current_user.email }})</a>
-          </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('auth.logout') }}">
+            Logout ({{ current_user.email }})</a>
+        </li>
         {% endif %}
       </ul>
     </div>

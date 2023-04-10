@@ -9,6 +9,7 @@ from blog.extensions import migrate
 from .user.views import user_app
 from .report.views import report_app
 from .articles.views import articles_app
+from .author.views import author_app
 from .auth.views import auth_app
 # from blog import commands
 # from .commands import init_db
@@ -57,6 +58,7 @@ def register_blueprints(app: Flask):
     app.register_blueprint(user_app)
     app.register_blueprint(report_app)
     app.register_blueprint(articles_app)
+    app.register_blueprint(author_app)
     app.register_blueprint(auth_app)
 
 
@@ -110,17 +112,17 @@ def create_articles():
         text="Flask — фреймворк для создания веб-приложений на языке\
             программирования Python, использующий набор инструментов Werkzeug,\
             а также шаблонизатор Jinja2.", 
-        author=1)
+        author_id=1)
     a2 = Article(
         title="Django", 
         text="Django — свободный фреймворк для веб-приложений на языке Python,\
             использующий шаблон проектирования MVC.", 
-        author=2)
+        author_id=2)
     a3 = Article(
         title="Django REST", 
         text="Django REST framework - это мощный и гибкий набор инструментов\
             для создания Web API.", 
-        author=3)
+        author_id=3)
     
     db.session.add(a1)
     db.session.add(a2)
