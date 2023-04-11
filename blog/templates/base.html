@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+      {% block title %}
+          Base title
+      {% endblock %}
+    </title>
+    {% block css %}
+      <!-- Bootstrap CSS 5.3.0-alpha2 -->
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    {% endblock %}
+  </head>
+  <body>
+    {% include 'navbar.html' %}
+
+    <div class="container">
+      {% block body %}
+        <h1>Hello base!</h1>
+      {% endblock %}
+    </div>
+
+    {% block js %}
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS 5.3.0-alpha2 -->
+      <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    {% endblock %}
+  </body>
+</html>
+

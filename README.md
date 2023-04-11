@@ -5,6 +5,7 @@
 
 ### Окружение разработки
 - Flask-2.2.3 Werkzeug-2.2.3 itsdangerous-2.1.2;
+
 - python 3.10;
 - vUbuntu Server 22_04.
 
