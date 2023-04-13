@@ -21,16 +21,6 @@
         <div><small class="text-muted">Created at: {{ article.created_at.strftime('%d-%m-%Y %H:%M:%S') }}</small></div>
         <div><small class="text-muted">Updated at: {{ article.updated_at.strftime('%d-%m-%Y %H:%M:%S') }}</small></div>
     </div>
-    <div class="col-6">
-        {% for tag in article.tags %}
-        <!-- <button type="button" class="btn text-bg-info">
-            <span class="badge text-bg-info">{{ tag.name }}</span>
-        </button> -->
-            <!-- <span class="badge text-bg-info">{{ tag.name }}</span> -->
-            <a href="{{ url_for('tags.tag_detail', tag_id=tag.id) }}" 
-                class="badge text-bg-info">{{ tag.name }}</a>
-        {% endfor %}
-    </div>
 </div>
 <div>
     <a href="{{ url_for('articles.articles_list') }}">Back to articles list</a>
