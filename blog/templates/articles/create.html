@@ -11,7 +11,7 @@
     </div>
     <form method="POST" action="{{ url_for('articles.create_article') }}">
         {{ form.csrf_token }}
-        {% for field in ['title', 'text'] %}
+        {% for field in ['title', 'text', 'tags'] %}
             {{ render_field(form[field]) }}
         {% endfor %}
 

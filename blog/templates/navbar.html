@@ -18,6 +18,9 @@
           <a class="nav-link" href="{{ url_for('articles.articles_list') }}">
             Articles</a>         
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('tags.tags_list') }}">Tags</a>
+        </li>
         {% if current_user.is_authenticated %}
         <li class="nav-item">
            <a class="nav-link" href="{{ url_for('articles.create_article_form') }}">
