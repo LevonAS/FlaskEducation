@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from werkzeug.security import check_password_hash
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
+from blog.models import User
 from blog.forms.auth import LoginForm
 
 auth_app = Blueprint('auth', __name__, static_folder='../static')
@@ -9,21 +10,12 @@ auth_app = Blueprint('auth', __name__, static_folder='../static')
 
 @auth_app.route("/login/", methods=["GET", "POST"], endpoint="login")
 def login():
-    from blog.models import User
-
+    
     if request.method == "GET" and current_user.is_authenticated:
         return redirect(url_for('user.profile', pk=current_user.id))
-    
     elif request.method == "GET":
         return render_template("auth/login.html", form=LoginForm(request.form))
-   
-    # email = request.form.get("email")
-    # password = request.form.get("password")
-    
-    # if not email:
-    #     return render_template("auth/login.html", error="email not entered")
-    
-    # _user = User.query.filter_by(email=email).first()
+
     form=LoginForm(request.form)
 
     if form.validate_on_submit():

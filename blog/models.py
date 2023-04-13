@@ -4,7 +4,7 @@ from sqlalchemy import ForeignKey, Table
 from sqlalchemy.orm import relationship
 from werkzeug.security import check_password_hash
 
-from .app import db
+from blog.extensions import db
 
 
 article_tag_associations_table = Table(

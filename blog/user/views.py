@@ -3,6 +3,8 @@ from flask_login import login_required, current_user, login_user
 from werkzeug.exceptions import NotFound
 from werkzeug.security import generate_password_hash
 
+from blog.models import User
+from blog.extensions import app, db
 from blog.forms.user import UserRegisterForm
  
 user_app = Blueprint('user', __name__, static_folder='../static', url_prefix='/users')
@@ -19,8 +21,6 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for('articles.articles_list', pk=current_user.id))
 
-    from blog.models import User
-    from blog.app import db
     form = UserRegisterForm(request.form)
     errors = []
     if request.method == 'POST' and form.validate_on_submit():
@@ -50,7 +50,6 @@ def register():
 
 @user_app.route('/')
 def user_list():
-    from blog.models import User
     users = User.query.all()
     return render_template(
         'users/list.html',
@@ -61,7 +60,6 @@ def user_list():
 @user_app.route('/<int:pk>')
 @login_required
 def profile(pk: int):
-    from blog.models import User
     _user = User.query.filter_by(id=pk).one_or_none()
     if _user is None:
         raise NotFound(f"User #{pk} doesn't exist!")
