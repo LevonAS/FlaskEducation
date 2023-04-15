@@ -13,6 +13,9 @@
 - Bcrypt-Flask-1.0.2 bcrypt-4.0.1;
 - WTForms-3.0.1 dnspython-2.3.0 email-validator-1.3.1;
 - Flask-WTF-1.1.1;
+- Flask-Admin-1.6.1;
+- tablib-3.4.0;
+- mimesis-7.1.0;
 - python 3.10;
 - vUbuntu Server 22_04.
 
