@@ -1,11 +1,11 @@
-# import click
+import click
 from werkzeug.security import generate_password_hash
 
 from blog.models import User, Article, Author, Tag
 from blog.extensions import app, db
 
 
-@app.cli.command("init-db")
+@click.command("init-db")
 def init_db():
     """
     Run in your terminal:
@@ -15,7 +15,7 @@ def init_db():
     print("done!")
 
 
-@app.cli.command("create-users")
+@click.command("create-users")
 def create_users():
     """
     Run in your terminal:
@@ -39,7 +39,7 @@ def create_users():
     print("done! created users:", admin, james, mike)
 
 
-@app.cli.command("create-articles")
+@click.command("create-articles")
 def create_articles():
     """
     Run in your terminal:
@@ -85,7 +85,7 @@ def create_articles():
     print("done! created articles:", a1, a2, a3, a4)
 
 
-@app.cli.command('create-tags')
+@click.command('create-tags')
 def create_tags():
     """
     Run in your terminal:
@@ -97,4 +97,4 @@ def create_tags():
         for item in tags:
             db.session.add(Tag(name=item))
         db.session.commit()
-    print(f'Created tags: {", ".join(tags)}')
+    click.echo(f'Created tags: {", ".join(tags)}')
