@@ -3,8 +3,8 @@ from flask_login import login_required, current_user
 from werkzeug.exceptions import NotFound
 from sqlalchemy.orm import joinedload
 
-# from blog.app import db
-# from blog.models import Article, Author
+from blog.models import Article, Author, Tag
+from blog.extensions import db
 from blog.forms.article import CreateArticleForm
 
 
@@ -13,7 +13,6 @@ articles_app = Blueprint('articles', __name__, url_prefix='/articles', static_fo
 
 @articles_app.route('/', methods=['GET'])
 def articles_list():
-    from blog.models import Article
     articles: Article = Article.query.all()
     return render_template(
         'articles/list.html',
@@ -23,7 +22,6 @@ def articles_list():
 
 @articles_app.route('/<int:article_id>/', methods=['GET'])
 def article_detail(article_id):
-    from blog.models import Article
     _article: Article = Article.query.filter_by(
         id=article_id
     ).options(
@@ -41,7 +39,6 @@ def article_detail(article_id):
 @articles_app.route('/create/', methods=['GET'])
 @login_required
 def create_article_form():
-    from blog.models import Tag
     form = CreateArticleForm(request.form)
     form.tags.choices = [(tag.id, tag.name) for tag in Tag.query.order_by('name')]
     return render_template('articles/create.html', form=form)
@@ -49,10 +46,7 @@ def create_article_form():
 
 @articles_app.route('/', methods=['POST'])
 @login_required
-def create_article():
-    from blog.app import db
-    from blog.models import Article, Author, Tag
-    
+def create_article():  
     form = CreateArticleForm(request.form)
     form.tags.choices = [(tag.id, tag.name) for tag in Tag.query.order_by('name')]
     
