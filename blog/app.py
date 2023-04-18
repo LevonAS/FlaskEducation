@@ -2,9 +2,10 @@ from flask import Flask, Blueprint, render_template
 from flask_login import LoginManager
 from flask_wtf import CSRFProtect
 from werkzeug.security import generate_password_hash
+from combojsonapi.spec import ApiSpecPlugin
 import click
 
-from blog.extensions import app, db, login_manager, migrate, csrf, admin
+from blog.extensions import app, db, login_manager, migrate, csrf, admin, api
 from .user.views import user_app
 from .report.views import report_app
 from .articles.views import articles_app
@@ -24,6 +25,19 @@ def create_app() -> Flask:
     csrf.init_app(app)
     admin.init_app(app)
 
+    api.plugins = [
+        ApiSpecPlugin(
+            app=app,
+            tags={
+                'Tag': 'Tag API',
+                'User': 'User API',
+                'Author': 'Author API',
+                'Article': 'Article API',
+            }
+        ),
+    ]
+    api.init_app(app)
+
     login_manager.login_view = "auth.login"
     login_manager.init_app(app)
     
@@ -34,6 +48,7 @@ def create_app() -> Flask:
     
     register_blueprints(app)
     register_commands(app)
+    register_api_routes()
 
     return app
 
@@ -42,6 +57,25 @@ index_app = Blueprint('index', __name__, static_folder='../static', url_prefix='
 @index_app.route("/")
 def index_view():
     return render_template("index.html")
+
+
+def register_api_routes():
+    from blog.api.tag import TagList, TagDetail
+    from blog.api.user import UserList, UserDetail
+    from blog.api.author import AuthorList, AuthorDetail
+    from blog.api.article import ArticleList, ArticleDetail
+
+    api.route(TagList, 'tag_list', '/api/tags/', tag='Tag')
+    api.route(TagDetail, 'tag_detail', '/api/tags/<int:id>', tag='Tag')
+
+    api.route(UserList, 'user_list', '/api/users/', tag='User')
+    api.route(UserDetail, 'user_detail', '/api/users/<int:id>', tag='User')
+
+    api.route(AuthorList, 'author_list', '/api/authors/', tag='Author')
+    api.route(AuthorDetail, 'author_detail', '/api/authors/<int:id>', tag='Author')
+
+    api.route(ArticleList, 'article_list', '/api/articles/', tag='Article')
+    api.route(ArticleDetail, 'article_detail', '/api/articles/<int:id>', tag='Article')
 
 
 def register_blueprints(app: Flask):
