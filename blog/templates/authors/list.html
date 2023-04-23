@@ -14,7 +14,8 @@
                 <ul>
                     <li>
                         <a href="{{ url_for('user.profile', pk=author.user.id) }}">
-                            {{ author.user.first_name }} {{ author.user.last_name }} ( {{ author.user.email }} )
+                            {{ author.user.first_name }} {{ author.user.last_name }} {{ author.user.id }}
+                               ( email:  {{ author.user.email }}, написанных статей:  {{ article_count[author.user.id] }} )
                         </a>
                     </li>
                 </ul>

@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from flask_login import login_required, current_user
 from werkzeug.exceptions import NotFound
 from sqlalchemy.orm import joinedload
+import requests
 
 from blog.models import Article, Author, Tag
 from blog.extensions import db
@@ -14,9 +15,12 @@ articles_app = Blueprint('articles', __name__, url_prefix='/articles', static_fo
 @articles_app.route('/', methods=['GET'])
 def articles_list():
     articles: Article = Article.query.all()
+    # call RPC method
+    count_articles: Dict = requests.get('http://127.0.0.1:5000/api/articles/event_get_count/').json()
     return render_template(
         'articles/list.html',
         articles=articles,
+        count_articles=count_articles['count'],
     )
 
 
