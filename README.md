@@ -20,6 +20,9 @@
 - apispec==4.7.1;
 - PyYAML==5.4.1;
 - requests==2.26.0;
+- SQLite3;
+- python 3.10;
+- vUbuntu Server 22_04.
 
 
 ## Лицензия
