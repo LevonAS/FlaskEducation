@@ -24,7 +24,7 @@ def create_app() -> Flask:
     
     db.init_app(app)
     migrate.init_app(app, db, compare_type=True)
-    # csrf.init_app(app)
+    csrf.init_app(app)
     admin.init_app(app)
 
     api.plugins = [
