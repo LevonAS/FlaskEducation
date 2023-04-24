@@ -7,7 +7,7 @@
 {% block body %}
 {% if current_user.is_authenticated %}
     <div class="row">
-        <h1>Articles:</h1>
+        <h1>Articles (count: {{ count_articles }}, obtained from RPC call):</h1>
     </div>
     <div class="row row-cols-1 row-cols-md-4 g-4">
         {% for article in articles %}

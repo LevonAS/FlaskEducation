@@ -17,12 +17,12 @@ def login():
         return render_template("auth/login.html", form=LoginForm(request.form))
 
     form=LoginForm(request.form)
-
+    print('logF_1', form, form.email.data, form.password.data )
     if form.validate_on_submit():
         _user = User.query.filter_by(email=form.email.data).first()
         
         if not _user or not check_password_hash(_user.password, form.password.data):
-            print('logF', form.email.data, form.password.data)
+            print('logF_2', form.email.data, form.password.data)
             flash("User not found or wrong password")
             return render_template('auth/login.html', form=form)
 
