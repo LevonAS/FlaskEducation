@@ -47,7 +47,7 @@ class ArticleAdminView(CustomAdminView):
     can_export = True
     export_types = ('csv', 'xlsx')
     column_filters = ('author_id', 'title', 'text')
-    column_list = ('author', 'title', 'text', 'tags')
+    column_list = ('author', 'title', 'text')
     column_editable_list = ('text', 'tags')
     # column_searchable_list = ('text')
 
