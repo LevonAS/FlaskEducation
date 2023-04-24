@@ -3,6 +3,8 @@ from flask_login import LoginManager
 from flask_wtf import CSRFProtect
 from werkzeug.security import generate_password_hash
 from combojsonapi.spec import ApiSpecPlugin
+from combojsonapi.event import EventPlugin
+from combojsonapi.permission import PermissionPlugin
 import click
 
 from blog.extensions import app, db, login_manager, migrate, csrf, admin, api
@@ -22,10 +24,12 @@ def create_app() -> Flask:
     
     db.init_app(app)
     migrate.init_app(app, db, compare_type=True)
-    csrf.init_app(app)
+    # csrf.init_app(app)
     admin.init_app(app)
 
     api.plugins = [
+        EventPlugin(),
+        PermissionPlugin(),
         ApiSpecPlugin(
             app=app,
             tags={
